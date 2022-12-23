@@ -1,4 +1,4 @@
-package param_test
+package param_tests
 
 import (
 	"strings"
@@ -37,14 +37,14 @@ func TestTrim(t *testing.T) {
 
 func TestSplit(t *testing.T) {
 	type splitInput struct {
-		S string
+		S   string
 		Sep string
 	}
 	testCases := []param.TestCase[splitInput, []string]{
 		{
 			Name: "simple",
 			Input: splitInput{
-				S: "one two three",
+				S:   "one two three",
 				Sep: " ",
 			},
 			Expected: []string{"one", "two", "three"},
@@ -52,7 +52,7 @@ func TestSplit(t *testing.T) {
 		{
 			Name: "single",
 			Input: splitInput{
-				S: "one",
+				S:   "one",
 				Sep: " ",
 			},
 			Expected: []string{"one"},
@@ -60,23 +60,14 @@ func TestSplit(t *testing.T) {
 		{
 			Name: "empty separator",
 			Input: splitInput{
-				S: "one",
+				S:   "one",
 				Sep: "",
 			},
-			Expected: []string{"o","n","e"},
+			Expected: []string{"o", "n", "e"},
 		},
 	}
 
-	param.GroupTest(t, testCases, func(i splitInput) []string {
+	param.SliceGroupTest(t, testCases, func(i splitInput) []string {
 		return strings.Split(i.S, i.Sep)
-	}, func (t *testing.T, expected []string, actual []string) {
-		if len(expected) != len(actual) {
-			t.Errorf("slice length mismatch %d != %d", len(expected), len(actual))
-		}
-		for i := range expected {
-			if expected[i] != actual[i] {
-				t.Errorf("slice contents mismatch `%s` != `%s`", expected[i], actual[i])
-			}
-		}
 	})
 }
